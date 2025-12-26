@@ -1,6 +1,4 @@
 const clothingItem = require("../models/clothingItem");
-
-// ✅ UPDATE: import centralized error codes as required
 const {
   BAD_REQUEST,
   FORBIDDEN,
@@ -12,11 +10,10 @@ const {
 const getItems = async (req, res) => {
   try {
     const items = await clothingItem.find({});
-    res.status(200).send(items);
+    return res.status(200).send(items);
   } catch (err) {
-    console.error(err); // ✅ UPDATE: log error to terminal
-    res
-      .status(SERVER_ERROR) // ✅ UPDATE: use centralized error code
+    return res
+      .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
   }
 };
@@ -30,22 +27,18 @@ const createItem = async (req, res) => {
       name,
       weather,
       imageUrl,
-      owner: req.user._id, // already correct
+      owner: req.user._id,
     });
 
-    res.status(201).send(newItem);
+    return res.status(201).send(newItem);
   } catch (err) {
-    console.error(err.name); // ✅ UPDATE: log error name
-
     if (err.name === "ValidationError") {
-      // ✅ UPDATE: handle invalid data (400)
       return res
         .status(BAD_REQUEST)
         .send({ message: "Invalid data passed when creating a clothing item" });
     }
 
-    // ✅ UPDATE: default 500 error
-    res
+    return res
       .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
   }
@@ -63,10 +56,8 @@ const deleteItem = async (req, res) => {
     }
 
     await item.deleteOne();
-    res.status(200).send({ message: "Item deleted successfully" });
+    return res.status(200).send({ message: "Item deleted successfully" });
   } catch (err) {
-    console.error(err.name);
-
     if (err.name === "CastError") {
       return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
     }
@@ -75,12 +66,13 @@ const deleteItem = async (req, res) => {
       return res.status(NOT_FOUND).send({ message: "Item not found" });
     }
 
-    res
+    return res
       .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
   }
 };
 
+// Like an item
 const likeItem = async (req, res) => {
   try {
     const item = await clothingItem
@@ -91,10 +83,8 @@ const likeItem = async (req, res) => {
       )
       .orFail();
 
-    res.status(200).send(item);
+    return res.status(200).send(item);
   } catch (err) {
-    console.error(err.name);
-
     if (err.name === "CastError") {
       return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
     }
@@ -103,7 +93,7 @@ const likeItem = async (req, res) => {
       return res.status(NOT_FOUND).send({ message: "Item not found" });
     }
 
-    res
+    return res
       .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
   }
@@ -120,10 +110,8 @@ const dislikeItem = async (req, res) => {
       )
       .orFail();
 
-    res.status(200).send(item);
+    return res.status(200).send(item);
   } catch (err) {
-    console.error(err.name);
-
     if (err.name === "CastError") {
       return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
     }
@@ -132,7 +120,7 @@ const dislikeItem = async (req, res) => {
       return res.status(NOT_FOUND).send({ message: "Item not found" });
     }
 
-    res
+    return res
       .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
   }
