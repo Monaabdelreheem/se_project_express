@@ -1,6 +1,8 @@
 const User = require("../models/user");
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
+const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR, UNAUTHORIZED } = require("../utils/errors");
 const bcrypt = require("bcryptjs");
+const { JWT_SECRET } = require("../utils/config");
+const jwt = require("jsonwebtoken");
 
 // Get all users
 const getUsers = async (req, res) => {
@@ -59,6 +61,19 @@ const createUser = async (req, res) => {
     return res
       .status(SERVER_ERROR)
       .send({ message: "An error has occurred on the server." });
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findUserByCredentials(email, password);
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+    return res.status(200).send({ token });
+  } catch (err) {
+    return res
+      .status(UNAUTHORIZED)
+      .send({ message: "Invalid email or password" });
   }
 };
 
