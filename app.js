@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const mainRouter = require("./routes/index");
 const {createUser, login} = require("./controllers/users");
 const auth = require("./middlewares/auth");
-// const { SERVER_ERROR } = require("./utils/errors");
+
 
 const app = express();
 const { PORT = 3001 } = process.env;
