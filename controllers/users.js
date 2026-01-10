@@ -69,7 +69,7 @@ const createUser = async (req, res) => {
   } catch (err) {
     if (err.code === 11000) {
       return res
-        .status(409)
+        .status(CONFLICT)
         .send({ message: "User with this email already exists" });
     }
     if (err.name === "ValidationError") {
