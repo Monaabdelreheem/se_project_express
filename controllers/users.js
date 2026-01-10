@@ -25,6 +25,33 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
+// Update user
+const updateUser = async (req, res) => {
+  try {
+    const { name, avatar } = req.body;
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { name, avatar },
+      { new: true, runValidators: true }
+    ).orFail();
+    return res.status(200).send(updatedUser);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res
+        .status(BAD_REQUEST)
+        .send({ message: "Invalid data passed when updating the user" });
+    }
+
+    if (err.name === "DocumentNotFoundError") {
+      return res.status(NOT_FOUND).send({ message: "User not found" });
+    }
+
+    return res
+      .status(SERVER_ERROR)
+      .send({ message: "An error has occurred on the server." });
+  }
+};
+
 // Create a new user
 const createUser = async (req, res) => {
   try {
@@ -69,5 +96,6 @@ const login = async (req, res) => {
 module.exports = {
   createUser,
   login,
-  getCurrentUser
+  getCurrentUser,
+  updateUser,
 };
