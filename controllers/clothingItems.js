@@ -48,7 +48,7 @@ const createItem = async (req, res) => {
 const deleteItem = async (req, res) => {
   try {
     const item = await clothingItem.findById(req.params.itemId).orFail();
-
+// Check if the current user is the owner of the item
     if (item.owner.toString() !== req.user._id) {
       return res
         .status(FORBIDDEN)
