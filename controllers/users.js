@@ -62,7 +62,10 @@ const createUser = async (req, res) => {
       avatar,
       email,
       password: hashedPassword, });
-    return res.status(201).send(newUser);
+      const userResponse = newUser.toObject();
+    delete userResponse.password;
+
+    return res.status(201).send(userResponse);
   } catch (err) {
     if (err.code === 11000) {
       return res
@@ -80,6 +83,7 @@ const createUser = async (req, res) => {
   }
 };
 
+// User login
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
