@@ -56,6 +56,13 @@ const updateUser = async (req, res) => {
 const createUser = async (req, res) => {
   try {
     const { name, avatar, email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(BAD_REQUEST)
+        .send({ message: "Email and password are required" });
+    }
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       name,
