@@ -62,7 +62,7 @@ const createUser = async (req, res) => {
         .status(BAD_REQUEST)
         .send({ message: "Email and password are required" });
     }
-    
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       name,
@@ -94,6 +94,13 @@ const createUser = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    if (!email || !password) {
+  return res
+    .status(BAD_REQUEST)
+    .send({ message: "Email and password are required" });
+}
+
     const user = await User.findUserByCredentials(email, password);
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
     return res.status(200).send({ token });
