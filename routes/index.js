@@ -1,16 +1,19 @@
 const router = require("express").Router();
 const usersRouter = require("./users");
-const clothingItemsRouter = require("./clothingItems");
 const auth = require("../middlewares/auth");
 const { NOT_FOUND } = require("../utils/errors");
+const clothingItemsRouter = require("./clothingItems");
+const { getItems } = require("../controllers/clothingItems");
 
 // public route
-router.use("/items", clothingItemsRouter);
+router.get("/items", getItems);
+
 
 // protect everything below
 router.use(auth);
 
 // protected routes
+router.use("/items", clothingItemsRouter);
 router.use("/users", usersRouter);
 
 router.use((req, res) => {
