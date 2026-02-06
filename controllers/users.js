@@ -83,7 +83,7 @@ const createUser = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    
+
     if (!email || !password) {
       return next(new BadRequestError("Email and password are required"));
     }
