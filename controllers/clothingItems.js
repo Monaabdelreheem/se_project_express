@@ -1,25 +1,22 @@
 const clothingItem = require("../models/clothingItem");
 const {
-  BAD_REQUEST,
-  FORBIDDEN,
-  NOT_FOUND,
-  SERVER_ERROR,
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
 } = require("../utils/errors");
 
 // Get all clothing items
-const getItems = async (req, res) => {
+const getItems = async (req, res, next) => {
   try {
     const items = await clothingItem.find({});
     return res.status(200).send(items);
   } catch (err) {
-    return res
-      .status(SERVER_ERROR)
-      .send({ message: "An error has occurred on the server." });
+    return next(err);
   }
 };
 
 // Create a new clothing item
-const createItem = async (req, res) => {
+const createItem = async (req, res, next) => {
   try {
     const { name, weather, imageUrl } = req.body;
 
@@ -33,47 +30,39 @@ const createItem = async (req, res) => {
     return res.status(201).send(newItem);
   } catch (err) {
     if (err.name === "ValidationError") {
-      return res
-        .status(BAD_REQUEST)
-        .send({ message: "Invalid data passed when creating a clothing item" });
+      return next(
+        new BadRequestError("Invalid data passed when creating a clothing item")
+      );
     }
-
-    return res
-      .status(SERVER_ERROR)
-      .send({ message: "An error has occurred on the server." });
+    return next(err);
   }
 };
 
 // Delete a clothing item by ID
-const deleteItem = async (req, res) => {
+const deleteItem = async (req, res, next) => {
   try {
     const item = await clothingItem.findById(req.params.itemId).orFail();
 // Check if the current user is the owner of the item
     if (item.owner.toString() !== req.user._id) {
-      return res
-        .status(FORBIDDEN)
-        .send({ message: "Forbidden: You cannot delete this item" });
+      return next(new ForbiddenError("Forbidden: You cannot delete this item"));
     }
 
     await item.deleteOne();
     return res.status(200).send({ message: "Item deleted successfully" });
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      return next(new BadRequestError("Invalid item ID"));
     }
 
     if (err.name === "DocumentNotFoundError") {
-      return res.status(NOT_FOUND).send({ message: "Item not found" });
+      return next(new NotFoundError("Item not found"));
     }
-
-    return res
-      .status(SERVER_ERROR)
-      .send({ message: "An error has occurred on the server." });
+    return next(err);
   }
 };
 
 // Like an item
-const likeItem = async (req, res) => {
+const likeItem = async (req, res, next) => {
   try {
     const item = await clothingItem
       .findByIdAndUpdate(
@@ -86,21 +75,18 @@ const likeItem = async (req, res) => {
     return res.status(200).send(item);
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      return next(new BadRequestError("Invalid item ID"));
     }
 
     if (err.name === "DocumentNotFoundError") {
-      return res.status(NOT_FOUND).send({ message: "Item not found" });
+      return next(new NotFoundError("Item not found"));
     }
-
-    return res
-      .status(SERVER_ERROR)
-      .send({ message: "An error has occurred on the server." });
+    return next(err);
   }
 };
 
 // Dislike (unlike) an item
-const dislikeItem = async (req, res) => {
+const dislikeItem = async (req, res, next) => {
   try {
     const item = await clothingItem
       .findByIdAndUpdate(
@@ -113,16 +99,13 @@ const dislikeItem = async (req, res) => {
     return res.status(200).send(item);
   } catch (err) {
     if (err.name === "CastError") {
-      return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
+      return next(new BadRequestError("Invalid item ID"));
     }
 
     if (err.name === "DocumentNotFoundError") {
-      return res.status(NOT_FOUND).send({ message: "Item not found" });
+      return next(new NotFoundError("Item not found"));
     }
-
-    return res
-      .status(SERVER_ERROR)
-      .send({ message: "An error has occurred on the server." });
+    return next(err);
   }
 };
 
