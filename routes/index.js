@@ -5,10 +5,14 @@ const { NOT_FOUND } = require("../utils/errors");
 const clothingItemsRouter = require("./clothingItems");
 const { getItems } = require("../controllers/clothingItems");
 const { createUser, login } = require("../controllers/users");
+const {
+  validateUserSignUp,
+  validateUserSignIn,
+} = require("../middlewares/validation");
 
 // public routes
-router.post("/signup", createUser);
-router.post("/signin", login);
+router.post("/signup", validateUserSignUp, createUser);
+router.post("/signin", validateUserSignIn, login);
 router.get("/items", getItems);
 
 
