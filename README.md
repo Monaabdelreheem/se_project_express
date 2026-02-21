@@ -44,6 +44,12 @@ The server handles data storage and client requests and sets the foundation for 
 By default, the server runs on **port 3001**.
 Once running, the terminal will display a message confirming that the server is up and listening for requests 🟢.
 
+### 🌐 Production Links
+
+Backend API: https://mona-wtwr.artitech.com
+
+Frontend GitHub Repo: https://github.com/Monaabdelreheem/se_project_react
+
 ### 🔌 Sample API Endpoints
 
 * GET /users , returns a list of users
