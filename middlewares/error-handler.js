@@ -1,5 +1,5 @@
 module.exports = (err, req, res, next) => {
-  console.error(err);
+  // Error logging removed for production
 
   const { statusCode = 500, message } = err;
 
