@@ -1,9 +1,20 @@
----
-## Deployment Information
+# WTWR (What to Wear React)
 
-- **Backend domain:** https://api.mona-wtwr.artitech.com
-- **Frontend repo:** https://github.com/Monaabdelreheem/se_project_react
-- **Project pitch video:** [Add your video link here]
+**Live Website:**  
+https://mona-wtwr.artitech.com/
+
+**Backend API:**  
+https://api.mona-wtwr.artitech.com/
+
+---
+
+## Deployment
+
+- Frontend: https://mona-wtwr.artitech.com/
+- Frontend (www): https://www.mona-wtwr.artitech.com/
+- Backend API: https://api.mona-wtwr.artitech.com/
+- Frontend repo: https://github.com/Monaabdelreheem/se_project_react
+- Backend repo: https://github.com/Monaabdelreheem/se_project_express
 
 ---
 ### 👗 WTWR (What to Wear?) Back End
@@ -52,9 +63,10 @@ The server handles data storage and client requests and sets the foundation for 
 By default, the server runs on **port 3001**.
 Once running, the terminal will display a message confirming that the server is up and listening for requests 🟢.
 
+
 ### 🌐 Production Links
 
-Backend API: https://mona-wtwr.artitech.com
+Backend API: https://api.mona-wtwr.artitech.com
 
 Frontend GitHub Repo: https://github.com/Monaabdelreheem/se_project_react
 
