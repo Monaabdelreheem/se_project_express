@@ -16,7 +16,9 @@ https://api.mona-wtwr.artitech.com/
 - Frontend repo: https://github.com/Monaabdelreheem/se_project_react
 - Backend repo: https://github.com/Monaabdelreheem/se_project_express
 
----
+## Project Pitch Video
+Check out [this video](https://drive.google.com/file/d/1X0Jr1Tb7wt5OXSugp5YywhJzyz6p2m4d/view?usp=drive_link)
+
 ### 👗 WTWR (What to Wear?) Back End
 
 This back end project focuses on building a server for the WTWR (What to Wear?) application 🌦️👕. The goal is to strengthen server side development skills, work with databases, and build a scalable API.
